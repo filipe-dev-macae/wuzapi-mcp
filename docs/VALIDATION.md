@@ -16,6 +16,13 @@ no WhatsApp que funcionaram:
 - Combinação de resposta, URL e copiar na mesma mensagem.
 - Link preview de um link curto do Mercado Livre, incluindo sua apresentação.
 
+Teste posterior pelo Composio, autorizado pelo titular: criação de grupo
+`WuzAPI Test`, com administração da conta do titular e inclusão do segundo
+número como participante comum. A consulta do grupo confirmou dois membros e
+as permissões pedidas. Dois textos de demonstração assinados por atendentes
+fictícios foram aceitos pela API; a apresentação dessas assinaturas ainda
+depende da confirmação visual no aplicativo.
+
 Esses envios foram feitos diretamente pela API WuzAPI. O remetente e o
 destinatário eram o mesmo número do titular: a validação foi na conversa consigo
 mesmo. Isso não substitui teste de entrega entre contas distintas ou em versões

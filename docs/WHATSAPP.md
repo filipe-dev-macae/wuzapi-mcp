@@ -27,8 +27,27 @@ permissões e mensagens temporárias. As ações obedecem às permissões da con
 no WhatsApp; várias alterações exigem que ela seja administradora do grupo.
 Ter acesso administrativo ao MCP não concede essa permissão no WhatsApp.
 
-A consulta `GET /group/list` foi executada com sucesso pelo Composio. Não foram
-criados grupos nem alterados participantes ou configurações durante o teste.
+A consulta `GET /group/list` foi executada com sucesso pelo Composio. Em teste
+posterior, expressamente autorizado, foi criado o grupo `WuzAPI Test` com dois
+participantes: a conta do titular como proprietária/administradora e o número
+adicional como participante comum. `GET /group/info` confirmou as permissões.
+Números e identificadores privados do grupo não são incluídos neste repositório.
+
+## Assinaturas de atendimento
+
+O teste de assinatura usa o texto de `send_text`, por exemplo:
+
+```text
+*Ana — Atendimento*
+
+Olá! Como posso ajudar?
+```
+
+Foram enviados ao grupo de teste dois exemplos com atendentes fictícios,
+Ana e Bruno, pelo mesmo número. A API aceitou ambos. Essa assinatura é uma
+identificação visual no conteúdo: não cria usuários WhatsApp independentes,
+não altera a identidade do remetente e não implementa distribuição de
+conversas ou controle de acesso de uma central de atendimento.
 
 ## Reações
 
