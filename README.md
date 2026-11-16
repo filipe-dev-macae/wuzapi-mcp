@@ -24,7 +24,8 @@ continua sendo um projeto independente, instalado a partir do
 - HTTPS autenticado validado: descoberta das ferramentas, consulta de saúde
   até o WuzAPI e status da sessão. Sem chave, o endpoint retorna HTTP 401.
 - Conector `Wuzapi MCP - AWS` ativo no Composio; saúde e instâncias consultadas
-  com sucesso por ele. Configuração do conector no OpenBot ainda pendente.
+  com sucesso por ele. O titular confirmou uso bem-sucedido pelo OpenBot;
+  relatou dificuldade da ZapIA ao executar o formato de carrossel solicitado.
 - Atualização automática aplicada em 16/11/2026: commit WuzAPI
   `3ee4ecddd4c935f492fc54cde81923fc0938b36b`, com 114 operações no catálogo ativo.
 - Nenhum segredo, sessão, banco, backup ou número real faz parte deste repositório.

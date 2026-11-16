@@ -64,14 +64,19 @@ As descrições das ferramentas já existentes também mudaram e podem ser cache
 Em 16/11/2026, após sincronização pelo titular, `get_usage_guide` foi descoberto
 e executado pelo Composio com sucesso. A conexão retorna o guia atualizado.
 
-Nesta sessão, a busca do conector ainda retornou as 13 ferramentas e descrições
-antigas. A integração Composio disponível não oferece sincronização de Custom
-MCP, e não há credencial administrativa de projeto configurada na VPS. Não foi
-recriada a conexão nem pedida uma nova autorização desnecessária. A operação
-oficial é [Sync a custom toolkit](https://docs.composio.dev/reference/api-reference/toolkits/postCustomToolkitsSync),
-que usa API key do projeto Composio (diferente da chave deste MCP). Execute-a
-por uma integração administrativa autorizada, informando o slug do seu toolkit
-e, quando necessário, o ID da conta conectada. Não cole essa chave no chat.
+Se precisar sincronizar futuras mudanças de ferramentas, a operação oficial é
+[Sync a custom toolkit](https://docs.composio.dev/reference/api-reference/toolkits/postCustomToolkitsSync),
+que usa API key do projeto Composio, diferente da chave deste MCP. Use uma
+integração administrativa autorizada ou o painel; não cole a chave no chat.
+
+Após relato de dificuldade da ZapIA, foram adicionados dois fluxos:
+carrossel de links em `section="messages"` e recebimento/automação em
+`section="administration"`. O guia principal aponta para essas seções e
+explica que um card com três botões não atende a um pedido de três cards.
+Esses fluxos não adicionam extrator de páginas, conversor ou receptor de eventos
+ao MCP: ausência real dessas capacidades deve ser informada, sem enviar outro
+formato por conta própria. Como só o conteúdo mudou, basta consultar o guia
+novamente; não é necessária nova sincronização de ferramentas.
 
 No fluxo ZapIA → Composio, não presuma que as instructions do servidor original
 sejam repassadas. Se o cliente permitir instruções próprias, use:

@@ -41,6 +41,25 @@ O carrossel não tem preview nativo automático por card. Não invente
 conseguir obter metadados da página, pode montar imagem/texto/botão antes do
 envio. Não fabrique título, preço, desconto ou disponibilidade.
 
+## Fluxos para pedidos comuns
+
+- **“Carrossel com estes três links para meu número conectado”**: leia
+  `get_usage_guide(section="messages")`, seção “Fluxo: carrossel de links”.
+  O resultado esperado é uma mensagem com três cards, cada um com sua imagem
+  e seu botão. Um card com três botões não atende a esse pedido. Não substitua
+  o formato nem envie um conjunto parcial se faltar material: explique o
+  bloqueio e obtenha o dado faltante ou uma escolha do usuário antes de enviar.
+- **“Quero receber webhooks/ativar atendimento automático”**: leia
+  `get_usage_guide(section="administration")`, seção “Fluxo: eventos e atendimento”.
+  Inscrever eventos, receber POSTs, consultar mensagens e acionar um agente
+  são etapas diferentes. Este MCP não tem caixa de entrada de webhooks nem
+  mecanismo para acordar uma conversa da ZapIA. Não afirme automação ativa
+  sem um teste de ponta a ponta.
+
+Se uma tarefa exige ferramenta que seu cliente não oferece, identifique essa
+limitação. Falta de acesso à página não prova que a página não tenha imagem.
+Não deduza capacidades da ZapIA a partir das capacidades locais do OpenBot.
+
 ## Autorizações e resultados
 
 - Resolva instância, destinatário, conteúdo e alcance com base no pedido. Execute

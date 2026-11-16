@@ -132,11 +132,20 @@ chave real foi gerada, revogada ou rotacionada. Procedimento em `ROTATION.md`.
 
 ## Limites restantes dos clientes e da infraestrutura
 
-- Chamada partindo da ZapIA; o conector Composio já foi validado.
-- Aplicação da configuração MCP dentro do OpenBot.
+- Execução correta do carrossel pela ZapIA após revisão dos fluxos da skill.
+- Recepção persistente de eventos pelo MCP e acionamento automático da ZapIA.
 - Inicialização depois de reboot real da VPS.
 - Rollback em incidente real; a recuperação foi exercitada em testes automatizados.
 - Todos os demais endpoints do catálogo em contas WhatsApp reais.
+
+O titular confirmou que o OpenBot funcionou com o MCP. Relatou que a ZapIA
+enviou uma mensagem com três botões ao receber pedido de carrossel com três
+links; não houve observação direta dessa execução pelo mantenedor. A skill foi
+revista com roteiro e payload de três cards, diagnóstico de imagem ausente,
+distinção entre falta de ferramenta e falta de imagem no site, e preservação
+do formato até uma escolha do usuário. O fluxo de eventos distingue consulta
+sob demanda, receptor e gatilho do host. Revisar instruções não implementa
+essas capacidades ausentes nem comprova comportamento futuro da LLM.
 
 ## Repetir as verificações
 

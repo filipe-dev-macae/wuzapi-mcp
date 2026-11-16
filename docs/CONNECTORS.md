@@ -48,7 +48,11 @@ as ferramentas `CUSTOM_WUZAPI_MCP_AWS_HEALTH` e
 `CUSTOM_WUZAPI_MCP_AWS_LIST_INSTANCES` executaram com sucesso pelo Composio,
 confirmando uma instância conectada e autenticada. O envio de botões também
 foi descoberto; nenhuma mensagem foi enviada nessa validação. A chamada
-partindo da ZapIA ainda não foi validada nesta sessão.
+partindo da ZapIA não foi acompanhada diretamente nessa validação. Depois, o
+titular relatou que ela conseguiu enviar pelo conector, mas substituiu um
+carrossel solicitado por uma mensagem com três botões. A conexão funcionar
+não comprova que o agente executou corretamente o formato pedido. A skill
+agora descreve o fluxo de carrossel e os bloqueios de imagem sem substituição.
 
 Se mudar somente o catálogo de endpoints, os nomes das ferramentas MCP
 permanecem iguais. Se o código adicionar ferramentas MCP, sincronize o toolkit
@@ -83,8 +87,9 @@ exato depende do cliente. Um exemplo comum de configuração é:
 }
 ```
 
-Esse é um modelo, não um arquivo já aplicado à configuração interna do OpenBot.
-O local/esquema dessa configuração ainda precisa ser confirmado no aplicativo.
+Esse é um modelo, não um arquivo aplicado por este instalador à configuração
+interna do OpenBot. O titular confirmou posteriormente que o acesso pelo
+OpenBot funcionou; o arquivo exato que ele configurou não foi inspecionado aqui.
 O arquivo que receber a chave deve ter permissão `600`. Para outro sistema
 externo, use HTTPS público e uma chave exclusiva.
 
