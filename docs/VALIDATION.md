@@ -149,6 +149,14 @@ essas capacidades ausentes nem comprova comportamento futuro da LLM.
 
 ## Repetir as verificações
 
+O titular compartilhou um diagnóstico do OpenBot de 98 s totais para um lote
+com três envios que somaram aproximadamente 3,08 s. O restante envolveu
+preparação e processamento; não há medição individual de todas essas etapas.
+O fluxo HTTP 403 → navegador autorizado → extração de fotos → conversão WebP
+em JPEG/base64 foi incorporado à skill, junto de reutilização do contexto
+confiável. O mantenedor não repetiu o teste nem enviou mensagens para documentá-lo;
+esses números são relato de uma execução, não benchmark ou garantia.
+
 Publicação validada em 16/11/2026: Cloudflare Tunnel saudável com quatro
 conexões; HTTPS `/healthz` retornou 200 e `/mcp` sem chave retornou 401.
 Um cliente MCP real usando a chave dedicada ao Composio descobriu as 13

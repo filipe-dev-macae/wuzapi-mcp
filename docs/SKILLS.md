@@ -78,6 +78,13 @@ ao MCP: ausência real dessas capacidades deve ser informada, sem enviar outro
 formato por conta própria. Como só o conteúdo mudou, basta consultar o guia
 novamente; não é necessária nova sincronização de ferramentas.
 
+O relato posterior do OpenBot também orientou um fluxo de preparação de cards:
+403 na leitura HTTP leva ao navegador autorizado disponível; extração de dados
+da página e conversão WebP em JPEG/PNG são preparadas em lote. Guia, destino e
+schemas já carregados são reutilizados enquanto confiáveis no mesmo contexto,
+sem repetir a descoberta a cada card. A skill não garante latência nem torna
+um navegador/conversor disponível para clientes que não os tenham.
+
 No fluxo ZapIA → Composio, não presuma que as instructions do servidor original
 sejam repassadas. Se o cliente permitir instruções próprias, use:
 

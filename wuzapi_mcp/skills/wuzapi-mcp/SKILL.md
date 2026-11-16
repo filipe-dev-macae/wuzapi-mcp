@@ -22,6 +22,11 @@ as credenciais internamente. Para recursos adicionais, descubra o endpoint
 com `api_operations(search=...)` e consulte o nome final do `$ref` usando
 `api_schema(name=...)`. O catálogo ativo prevalece sobre exemplos deste guia.
 
+Reutilize o guia/referências já carregados no contexto e os IDs, schemas e
+destinatário confirmados para o mesmo lote. Não releia tudo a cada card.
+Revalide estado ao mudar de conta/destino, após reconexão/erro ou se a informação
+deixou de ser confiável; isso não dispensa autenticação e autorização do envio.
+
 ## Escolher o formato
 
 | Necessidade | Caminho |
@@ -42,6 +47,11 @@ conseguir obter metadados da página, pode montar imagem/texto/botão antes do
 envio. Não fabrique título, preço, desconto ou disponibilidade.
 
 ## Fluxos para pedidos comuns
+
+- **“Cards de produtos do Mercado Livre”**: leia em `section="messages"` o
+  “Fluxo rápido: Mercado Livre, 403 e imagens WebP”. Após um 403, passe ao
+  navegador autorizado disponível, sem repetir a mesma leitura bloqueada.
+  Prepare imagens em lote e preserve se foram pedidos cards separados ou carrossel.
 
 - **“Carrossel com estes três links para meu número conectado”**: leia
   `get_usage_guide(section="messages")`, seção “Fluxo: carrossel de links”.
