@@ -32,9 +32,9 @@ def generate(source: Path, commit: str) -> dict:
                            "multipart_only": bool(content) and "application/json" not in content})
     if len(operations) < 20:
         raise ValueError("Formato das rotas mudou; catálogo incompleto, atualização bloqueada")
-    # Include component schemas so callers can resolve documented $refs.
+    # Upstream currently mixes OpenAPI 3 paths with Swagger 2 definitions.
     return {"upstream": UPSTREAM, "commit": commit, "operations": operations,
-            "schemas": spec.get("components", {}).get("schemas", {})}
+            "schemas": {**spec.get("definitions", {}), **spec.get("components", {}).get("schemas", {})}}
 
 
 def main():

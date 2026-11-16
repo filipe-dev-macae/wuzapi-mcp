@@ -104,6 +104,7 @@ Consulte `session(action="status")` até `loggedIn` ser verdadeiro. O retorno de
 - [Serviços, backups, atualização e recuperação](docs/OPERATIONS.md)
 - [Autenticação, permissões e limites](docs/SECURITY.md)
 - [Validação e resultados](docs/VALIDATION.md)
+- [Grupos, reações, respostas citadas e cards com botões](docs/WHATSAPP.md)
 
 Desenvolvimento:
 

@@ -51,9 +51,16 @@ Na VPS também foram executados:
 - Backup consistente real seguido da reinicialização e consulta pelo MCP.
 - Consulta de upstream que confirmou a versão já atualizada, sem implantação nova.
 
-Não foram enviados testes novos pelo MCP a uma conta real nesta implementação.
-O mapeamento de envio é coberto por testes, mas uma demonstração pelo cliente
-final deve ter destinatário/conteúdo autorizados.
+Após autorização do titular, foram enviados testes reais pelo Composio/MCP:
+link no corpo com botão de URL, resposta citada com preview, reação 👍 e card
+com imagem da oferta e botão. As chamadas retornaram sucesso; a confirmação
+visual desses novos formatos ainda está pendente. Uma consulta de grupos
+também funcionou, sem alterações. Procedimentos em `WHATSAPP.md`.
+
+Nesse teste foi corrigida a extração de schemas legados em `definitions`,
+usados pelo OpenAPI do WuzAPI. O catálogo agora contém 57 schemas consultáveis.
+Os 19 testes passaram, incluindo regressão desse formato. Os schemas de
+mensagem, reação e criação de grupo foram consultados pelo Composio real.
 
 ## Ainda não validado
 

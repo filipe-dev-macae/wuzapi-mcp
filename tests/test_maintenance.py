@@ -79,11 +79,12 @@ def test_catalog_required_routes_and_inactive_comments(tmp_path):
     routes += ['// s.router.Handle("/inactive", handler).Methods("POST")',
                'adminRoutes.Handle("/users", handler).Methods("GET")']
     (source / "routes.go").write_text("\n".join(routes))
-    (source / "static/api/spec.yml").write_text("paths: {}\n")
+    (source / "static/api/spec.yml").write_text("paths: {}\ndefinitions:\n  Legacy: {type: string}\ncomponents:\n  schemas:\n    Modern: {type: integer}\n")
     catalog = generate(source, "fake-commit")
     assert len(catalog["operations"]) == 21
     assert any(op["path"] == "/admin/users" for op in catalog["operations"])
     assert not any(op["path"] == "/inactive" for op in catalog["operations"])
+    assert catalog["schemas"] == {"Legacy": {"type": "string"}, "Modern": {"type": "integer"}}
     with pytest.raises(RuntimeError, match="endpoints"):
         ops.validate_catalog(catalog)
 
@@ -91,3 +92,4 @@ def test_catalog_required_routes_and_inactive_comments(tmp_path):
 def test_bundled_catalog_has_required_routes():
     catalog = json.loads((Path(__file__).parents[1] / "wuzapi_mcp/operations.json").read_text())
     ops.validate_catalog(catalog)
+    assert {"MessageText", "ReactionText", "CreateGroup"} <= catalog["schemas"].keys()
