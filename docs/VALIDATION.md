@@ -23,7 +23,7 @@ as permissões pedidas. Dois textos de demonstração assinados por atendentes
 fictícios foram aceitos pela API; a apresentação dessas assinaturas ainda
 depende da confirmação visual no aplicativo.
 
-Esses envios foram feitos diretamente pela API WuzAPI. O remetente e o
+Os testes iniciais de botões e preview usaram diretamente a API WuzAPI. O remetente e o
 destinatário eram o mesmo número do titular: a validação foi na conversa consigo
 mesmo. Isso não substitui teste de entrega entre contas distintas ou em versões
 diferentes de Android, iOS e WhatsApp Web. Não há números, códigos de pareamento,
