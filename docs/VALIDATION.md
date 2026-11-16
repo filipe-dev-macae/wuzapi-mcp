@@ -57,7 +57,7 @@ final deve ter destinatário/conteúdo autorizados.
 
 ## Ainda não validado
 
-- Cadastro e chamada reais pelo Composio/ZapIA.
+- Chamada partindo da ZapIA; o conector Composio já foi validado.
 - Aplicação da configuração MCP dentro do OpenBot.
 - Inicialização depois de reboot real da VPS.
 - Atualização real para um commit futuro; rollback foi exercitado em testes.
@@ -70,6 +70,10 @@ conexões; HTTPS `/healthz` retornou 200 e `/mcp` sem chave retornou 401.
 Um cliente MCP real usando a chave dedicada ao Composio descobriu as 13
 ferramentas, consultou saúde e confirmou a sessão conectada/autenticada pelo
 endpoint público. Nenhuma mensagem foi enviada nessa validação.
+
+Composio validado em 16/11/2026: conector `Wuzapi MCP - AWS` ativo, ferramentas
+de saúde e listagem de instâncias executadas com sucesso pelo conector real.
+A sessão retornou conectada e autenticada. Nenhuma mensagem foi enviada.
 
 Os serviços foram ajustados para logs privados, pois a conta de sistema
 `openbot` não tem acesso ao journal global. Unidades systemd foram verificadas,

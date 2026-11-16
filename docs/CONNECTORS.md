@@ -42,11 +42,13 @@ explicitamente autorizados.
 O recurso Custom MCP do Composio é experimental. Consulte os passos atuais em:
 https://docs.composio.dev/docs/extending-sessions/custom-mcp
 
-O cadastro ainda não foi executado: as ferramentas do conector Composio
-disponível nesta sessão não expõem a administração de Custom MCPs, e não há
-credencial da API de plataforma configurada na VPS. O MCP público já foi
-validado com a chave dedicada ao Composio usando um cliente MCP real. Falta
-cadastrar/conectar a conta no projeto correto do painel Composio.
+O titular cadastrou o conector **Wuzapi MCP - AWS**, toolkit
+`custom_wuzapi_mcp_aws`. Em 16/11/2026, a conexão foi encontrada como ativa e
+as ferramentas `CUSTOM_WUZAPI_MCP_AWS_HEALTH` e
+`CUSTOM_WUZAPI_MCP_AWS_LIST_INSTANCES` executaram com sucesso pelo Composio,
+confirmando uma instância conectada e autenticada. O envio de botões também
+foi descoberto; nenhuma mensagem foi enviada nessa validação. A chamada
+partindo da ZapIA ainda não foi validada nesta sessão.
 
 Se mudar somente o catálogo de endpoints, os nomes das ferramentas MCP
 permanecem iguais. Se o código adicionar ferramentas MCP, sincronize o toolkit

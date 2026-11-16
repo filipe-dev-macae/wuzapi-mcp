@@ -23,7 +23,8 @@ continua sendo um projeto independente, instalado a partir do
   por Cloudflare Tunnel após autorização explícita do proprietário.
 - HTTPS autenticado validado: descoberta das 13 ferramentas, consulta de saúde
   até o WuzAPI e status da sessão. Sem chave, o endpoint retorna HTTP 401.
-- Registro no Composio e configuração do conector no OpenBot ainda pendentes.
+- Conector `Wuzapi MCP - AWS` ativo no Composio; saúde e instâncias consultadas
+  com sucesso por ele. Configuração do conector no OpenBot ainda pendente.
 - Nenhum segredo, sessão, banco, backup ou número real faz parte deste repositório.
 
 ## Recursos
