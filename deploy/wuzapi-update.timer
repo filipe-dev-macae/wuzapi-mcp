@@ -1,0 +1,11 @@
+[Unit]
+Description=Verifica upstream WuzAPI a cada 15 minutos
+
+[Timer]
+OnCalendar=*:0/15
+Persistent=true
+RandomizedDelaySec=60
+Unit=wuzapi-update.service
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "wuzapi-mcp"
+version = "0.1.0"
+description = "MCP autenticado para gerir instâncias e recursos do WuzAPI"
+requires-python = ">=3.12"
+dependencies = ["fastmcp==4.2.0", "httpx2==2.16.2", "PyYAML==6.0.3"]
+
+[project.optional-dependencies]
+test = ["pytest==9.2.0", "pytest-asyncio==1.5.0"]
+
+[project.scripts]
+wuzapi-mcp = "wuzapi_mcp.server:main"
+wuzapi-mcp-keys = "wuzapi_mcp.keys:main"
+
+[tool.setuptools.package-data]
+wuzapi_mcp = ["operations.json"]
+
+[tool.setuptools.packages.find]
+include = ["wuzapi_mcp*"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+testpaths = ["tests"]

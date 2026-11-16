@@ -1,0 +1,100 @@
+# Conexão dos clientes
+
+## Composio e ZapIA
+
+O caminho escolhido é **ZapIA → Composio → nosso MCP**. A ZapIA já consegue
+acessar conectores personalizados do Composio, conforme teste prévio do titular.
+Isso dispensa OAuth/DCR no nosso MCP: o Composio usa API Key no cabeçalho.
+
+Após publicar HTTPS, use como URL final, sem redirecionamentos:
+
+```text
+https://wuzapi-mcp.filipesantosdev.pro/mcp
+```
+
+Cadastre um Custom MCP no projeto Composio com estes valores:
+
+```json
+{
+  "name": "WuzAPI",
+  "mcp_url": "https://wuzapi-mcp.filipesantosdev.pro/mcp",
+  "auth_schemes": [
+    {"mode": "API_KEY", "headers": {"Authorization": "Bearer {{generic_api_key}}"}}
+  ],
+  "user_id": "all"
+}
+```
+
+`user_id: "all"` compartilha a definição do conector com o projeto. Se precisar
+de definição privada por usuário, use o ID correto e verifique o plano do
+Composio. A disponibilidade de cada ferramenta nas sessões depende da inclusão
+do toolkit `CUSTOM_*` retornado pelo cadastro e da conta conectada correta.
+
+Conecte a conta fornecendo a chave dedicada ao Composio, armazenada na VPS em
+`/var/lib/openbot/wuzapi/secrets/composio.key`. Transfira-a por um meio privado,
+nunca em URL, README, issue ou commit. Não use o token administrativo do WuzAPI.
+
+As ferramentas sincronizam após a conexão. Teste `health` e `list_instances`
+antes de autorizar envios. Depois, selecione esse conector na conexão da ZapIA
+com o Composio. O primeiro teste com mensagens deve ter destinatário e conteúdo
+explicitamente autorizados.
+
+O recurso Custom MCP do Composio é experimental. Consulte os passos atuais em:
+https://docs.composio.dev/docs/extending-sessions/custom-mcp
+
+Se mudar somente o catálogo de endpoints, os nomes das ferramentas MCP
+permanecem iguais. Se o código adicionar ferramentas MCP, sincronize o toolkit
+novamente conforme a documentação do Composio.
+
+## OpenBot
+
+O usuário Linux `openbot` pode acessar diretamente:
+
+```text
+http://127.0.0.1:8082/mcp
+Authorization: Bearer <conteúdo de openbot.key>
+```
+
+A chave está em `/var/lib/openbot/wuzapi/secrets/openbot.key`. O campo `type`
+exato depende do cliente. Um exemplo comum de configuração é:
+
+```json
+{
+  "mcpServers": {
+    "wuzapi": {
+      "type": "http",
+      "url": "http://127.0.0.1:8082/mcp",
+      "headers": {"Authorization": "Bearer <CHAVE_PRIVADA_DO_OPENBOT>"}
+    }
+  }
+}
+```
+
+Esse é um modelo, não um arquivo já aplicado à configuração interna do OpenBot.
+O local/esquema dessa configuração ainda precisa ser confirmado no aplicativo.
+O arquivo que receber a chave deve ter permissão `600`. Para outro sistema
+externo, use HTTPS público e uma chave exclusiva.
+
+Também é possível testar localmente sem imprimir o segredo:
+
+```python
+import asyncio
+from pathlib import Path
+from fastmcp import Client
+
+async def main():
+    key = Path('/var/lib/openbot/wuzapi/secrets/openbot.key').read_text().strip()
+    async with Client('http://127.0.0.1:8082/mcp', auth=key) as client:
+        print([tool.name for tool in await client.list_tools()])
+        result = await client.call_tool('health', {})
+        print(result.data)
+
+asyncio.run(main())
+```
+
+## Outros sistemas
+
+Crie uma chave nova por sistema com o CLI documentado em `SECURITY.md`.
+Clientes externos precisam aceitar Streamable HTTP e Bearer em cabeçalho.
+Conexão direta da ZapIA a este MCP não está implementada: ela exige OAuth/DCR;
+o caminho escolhido passa pelo Composio.

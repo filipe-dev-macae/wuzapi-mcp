@@ -1,0 +1,11 @@
+[Unit]
+Description=Backup diário WuzAPI às 03:20 UTC
+
+[Timer]
+OnCalendar=*-*-* 03:20:00 UTC
+Persistent=true
+RandomizedDelaySec=60
+Unit=wuzapi-backup.service
+
+[Install]
+WantedBy=timers.target

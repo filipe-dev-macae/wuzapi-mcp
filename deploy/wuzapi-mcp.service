@@ -1,0 +1,16 @@
+[Unit]
+Description=WuzAPI MCP autenticado (Streamable HTTP)
+After=wuzapi.service
+
+[Service]
+WorkingDirectory=/srv/wuzapi-mcp
+EnvironmentFile=%h/wuzapi/secrets/mcp.env
+ExecStart=/srv/wuzapi-mcp/.venv/bin/python -m wuzapi_mcp.server
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=30
+UMask=0077
+NoNewPrivileges=true
+
+[Install]
+WantedBy=default.target

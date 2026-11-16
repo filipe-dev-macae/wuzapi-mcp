@@ -1,0 +1,12 @@
+[Unit]
+Description=Atualização automática WuzAPI e catálogo MCP com backup e rollback
+
+[Service]
+Type=oneshot
+WorkingDirectory=/srv/wuzapi-mcp
+EnvironmentFile=%h/wuzapi/secrets/mcp.env
+Environment=GOMAXPROCS=2
+ExecStart=/srv/wuzapi-mcp/.venv/bin/python -m wuzapi_mcp.maintenance update
+TimeoutStartSec=30min
+UMask=0077
+NoNewPrivileges=true

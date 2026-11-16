@@ -1,0 +1,138 @@
+# Operação e recuperação
+
+## Caminhos nesta VPS
+
+| Caminho | Conteúdo |
+| --- | --- |
+| `/srv/wuzapi-mcp` | Código Git, testes, documentação e venv do MCP |
+| `/srv/wuzapi-mcp/.toolchains/go` | Compilador Go local, fora do Git |
+| `/var/lib/openbot/wuzapi/source` | Checkout do repositório oficial |
+| `/var/lib/openbot/wuzapi/releases/<commit>` | Binário, assets e catálogo por versão |
+| `/var/lib/openbot/wuzapi/current` | Symlink para a release ativa |
+| `/var/lib/openbot/wuzapi/data` | SQLite e sessões |
+| `/var/lib/openbot/wuzapi/secrets` | Tokens, chave de criptografia, configurações e chaves MCP |
+| `/var/lib/openbot/wuzapi/backups` | Backups consistentes, privados |
+| `/var/lib/openbot/wuzapi/failed-state` | Estado preservado ao fazer rollback |
+| `/var/lib/openbot/wuzapi/last-update.json` | Resultado da última manutenção |
+| `/var/lib/openbot/wuzapi/maintenance-commands.log` | Saída privada de builds, testes e comandos |
+
+A pasta de teste anterior foi mantida em
+`/var/lib/openbot/wuzapi-capability-test` como cópia pré-migração. O processo
+antigo foi encerrado antes da cópia; não o reinicie em paralelo ao serviço
+definitivo, para não usar a mesma identidade de dispositivo duas vezes.
+
+## Comandos sem root
+
+Execute como `openbot`. Fora de uma sessão de login comum, prepare o acesso ao bus:
+
+```bash
+export XDG_RUNTIME_DIR="/run/user/$(id -u)"
+export DBUS_SESSION_BUS_ADDRESS="unix:path=$XDG_RUNTIME_DIR/bus"
+systemctl --user status wuzapi.service wuzapi-mcp.service
+systemctl --user list-timers
+journalctl --user -u wuzapi.service -u wuzapi-mcp.service -n 100 --no-pager
+```
+
+Reiniciar o WuzAPI interrompe temporariamente as conexões. Reiniciar somente o
+MCP não encerra as sessões do WhatsApp:
+
+```bash
+systemctl --user restart wuzapi-mcp.service
+systemctl --user restart wuzapi.service
+```
+
+Os serviços estão habilitados e o linger foi ativado administrativamente.
+Eles devem iniciar após reboot; não foi reiniciada a VPS durante a validação.
+
+## Atualização automática autorizada
+
+`wuzapi-update.timer` consulta a branch `main` de `asternic/wuzapi` a cada
+15 minutos, mais dispersão de até 60 segundos. É acompanhamento de commits,
+não somente releases. O cronograma não inclui tempo de build/teste.
+
+1. Confere origin oficial e preserva alterações locais não commitadas, bloqueando
+   a atualização se o checkout estiver sujo.
+2. Busca `main`; se o commit ativo já é o atual, termina sem reiniciar serviços.
+3. Cria worktree temporária, executa os testes Go e compila sem C.
+4. Extrai catálogo das rotas ativas e verifica endpoints necessários.
+5. Executa os testes do MCP e testa uma instância temporária sem conta WhatsApp:
+   saúde, rejeição de admin sem autenticação, criação e listagem autenticadas.
+6. Para os dois serviços, copia dados e segredos e marca o backup completo.
+7. Troca atomicamente o symlink da release, inicia os serviços e testa uma
+   consulta autenticada pelo MCP real.
+8. Se falhar depois da troca, recupera release, dados e segredos anteriores e
+   tenta iniciar novamente. O estado da tentativa fica preservado para análise.
+
+Há um bloqueio para impedir duas manutenções simultâneas. Uma falha de lock ou
+de serviço aparece no journal; outras falhas também são registradas em
+`last-update.json`. Não há notificações externas automáticas configuradas.
+
+O adaptador não altera o próprio código automaticamente. A sincronização do
+catálogo cobre endpoints novos sem adicionar ferramentas. Uma mudança
+incompatível pode exigir ajuste de código e impedir a implantação. Os testes
+automáticos não enviam WhatsApp e não garantem que o aplicativo ainda renderize
+botões; o teste real deve ser repetido após mudanças relevantes.
+
+Para executar/verificar manualmente:
+
+```bash
+systemctl --user start wuzapi-update.service
+journalctl --user -u wuzapi-update.service -n 100 --no-pager
+cd /srv/wuzapi-mcp
+WUZAPI_MCP_ENV_FILE="$HOME/wuzapi/secrets/mcp.env" \
+  .venv/bin/python -m wuzapi_mcp.maintenance status
+```
+
+Para desativar atualizações: `systemctl --user disable --now wuzapi-update.timer`.
+Se uma execução já estiver ativa, parar o timer não cancela essa execução.
+Não interrompa à força a implantação durante cópia/restauração de dados.
+
+## Backups
+
+Há backup diário às **03:20 UTC**, além do backup antes de cada implantação.
+Os serviços são parados brevemente para uma cópia consistente de SQLite e
+sessões. O backup contém dados e segredos, além do caminho da release anterior.
+Os binários anteriores são mantidos em `releases` e devem acompanhar o backup
+se for necessário recuperar em outra VPS.
+
+```bash
+systemctl --user start wuzapi-backup.service
+journalctl --user -u wuzapi-backup.service -n 50 --no-pager
+```
+
+Backups não são apagados automaticamente. Monitore espaço com
+`du -sh "$HOME/wuzapi/backups" "$HOME/wuzapi/releases"` e planeje retenção e cópia
+externa. Armazenar somente na mesma VPS não protege contra perda do disco.
+Uma verificação de capacidade bloqueia o backup se não houver espaço para a
+cópia e uma reserva de 512 MiB; isso não substitui uma política de retenção.
+
+## Restaurar
+
+Somente backups marcados `COMPLETE` e pertencentes à pasta de backups são aceitos.
+Identifique o backup correto antes de executar. A operação interrompe os serviços
+e reverte o estado lógico do banco para aquele momento:
+
+```bash
+cd /srv/wuzapi-mcp
+WUZAPI_MCP_ENV_FILE="$HOME/wuzapi/secrets/mcp.env" \
+  .venv/bin/python -m wuzapi_mcp.maintenance restore \
+  --backup "$HOME/wuzapi/backups/PASTA_DO_BACKUP"
+```
+
+O estado substituído é movido para `failed-state`, não apagado. Mensagens ou
+alterações recebidas após o snapshot podem deixar de aparecer no banco ativo,
+mesmo permanecendo no estado arquivado. Não existe mesclagem automática de bancos.
+
+Se o WhatsApp tiver revogado o dispositivo no lado remoto, restaurar um banco
+não desfaz essa revogação; pode ser necessário parear novamente.
+
+## Corrigir o código
+
+O OpenBot pode editar `/srv/wuzapi-mcp`, rodar `.venv/bin/pytest -q` e reiniciar
+o serviço MCP. O Git local registra o código do adaptador. O checkout WuzAPI é
+separado: edições nele não substituem o binário automaticamente. Compile/teste
+uma release antes de trocar `current`; preserve o estado com backup.
+
+O atualizador usa worktrees da versão oficial e não incorpora patches locais.
+Se manter um fork, será necessário rever a política de atualização, em vez de
+trocar o origin silenciosamente. Não coloque arquivos reais de sessão no Git.
