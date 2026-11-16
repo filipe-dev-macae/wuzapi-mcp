@@ -4,6 +4,10 @@ Servidor MCP em Python para gerenciar o WuzAPI pelo OpenBot, Composio e outros
 clientes. Inclui botões interativos, link preview, gestão de instâncias e
 pareamento por código ou QR Code.
 
+Código: [filipe-dev-macae/wuzapi-mcp](https://github.com/filipe-dev-macae/wuzapi-mcp)
+(repositório privado; exige acesso autorizado). Dados e credenciais da VPS
+ficam fora do repositório, mesmo sendo privado.
+
 ```text
 ZapIA → Composio ── HTTPS + Bearer API Key ──┐
                                           ├─ MCP → WuzAPI privado → WhatsApp

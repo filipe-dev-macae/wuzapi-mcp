@@ -25,11 +25,13 @@ de propriedade exclusiva de `openbot`.
 
 ## Adaptador e dependências
 
-Na conta de execução, clone o futuro repositório GitHub deste adaptador em
-`/srv/wuzapi-mcp`. Até sua publicação, use a cópia local preparada ou transporte
-somente os arquivos versionados.
+Na conta de execução, clone o repositório privado deste adaptador em
+`/srv/wuzapi-mcp`. É necessário acesso autorizado à conta/repositório GitHub
+e autenticação Git configurada por meio privado; não coloque tokens na URL.
+Ter o conector GitHub em um agente não autentica automaticamente o Git da VPS.
 
 ```bash
+git clone https://github.com/filipe-dev-macae/wuzapi-mcp.git /srv/wuzapi-mcp
 cd /srv/wuzapi-mcp
 python3 -m venv .venv
 .venv/bin/pip install -r requirements.lock
