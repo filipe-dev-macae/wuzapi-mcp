@@ -61,6 +61,9 @@ equivalente a `get_usage_guide` aparece no toolkit e execute uma leitura.
 O prefixo `CUSTOM_*` é atribuído pelo Composio; não copie um slug presumido.
 As descrições das ferramentas já existentes também mudaram e podem ser cacheadas.
 
+Em 16/11/2026, após sincronização pelo titular, `get_usage_guide` foi descoberto
+e executado pelo Composio com sucesso. A conexão retorna o guia atualizado.
+
 Nesta sessão, a busca do conector ainda retornou as 13 ferramentas e descrições
 antigas. A integração Composio disponível não oferece sincronização de Custom
 MCP, e não há credencial administrativa de projeto configurada na VPS. Não foi
@@ -87,6 +90,11 @@ Para um agente com suporte local a Agent Skills, copie a pasta inteira
 Não copie somente o SKILL.md, pois ele referencia três arquivos. Em instalações
 na mesma máquina, um link para essa pasta evita cópias divergentes. Instalação
 local é opcional: o servidor já oferece os mesmos arquivos remotamente.
+
+A skill operacional opcional `skills/rotacionar-wuzapi`, na raiz do projeto,
+orienta a rotação local de chave somente a pedido explícito. Não é servida como
+ferramenta remota e tem invocação implícita desativada nos hosts que respeitam
+`agents/openai.yaml`. Detalhes e limites em `ROTATION.md`.
 Nesta VPS foi criado um link em `/home/ubuntu/.codex/skills/wuzapi-mcp` para a
 fonte do projeto; o conteúdo pode ser descoberto pelo Codex em sessões futuras.
 Isso não modifica a configuração interna de skills do OpenBot.

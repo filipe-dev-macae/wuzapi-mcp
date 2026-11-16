@@ -33,6 +33,13 @@ autorizado e confira depois saúde e autenticação.
 
 ## Atualização e proteção de dados
 
+Rotação de chave MCP é somente sob pedido explícito do titular. Pedidos como
+“rotacionar WuzAPI composio” usam o CLI local em duas etapas, descrito em
+`/srv/wuzapi-mcp/docs/ROTATION.md`; nunca execute por conta de uma consulta,
+atualização automática ou sugestão de segurança. Prepare a transição, migre e
+teste o cliente e só então finalize. O MCP remoto não oferece essa mutação.
+O fluxo não troca tokens WuzAPI nem a chave de criptografia dos dados.
+
 O titular autorizou acompanhamento automático da `main` oficial de
 `asternic/wuzapi`, com consulta a cada 15 minutos. O timer executa testes/build,
 valida o catálogo, cria backup consistente e troca a release com rollback em

@@ -114,6 +114,7 @@ Consulte `session(action="status")` até `loggedIn` ser verdadeiro. O retorno de
 - [Skill, descoberta e instruções aos agentes](docs/SKILLS.md)
 - [Serviços, backups, atualização e recuperação](docs/OPERATIONS.md)
 - [Autenticação, permissões e limites](docs/SECURITY.md)
+- [Rotação manual de chaves, somente quando solicitada](docs/ROTATION.md)
 - [Validação e resultados](docs/VALIDATION.md)
 - [Grupos, reações, respostas citadas e cards com botões](docs/WHATSAPP.md)
 

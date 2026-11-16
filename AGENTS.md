@@ -4,6 +4,8 @@ Responda em pt-BR. Preserve credenciais. Não envie mensagens a clientes,
 publique serviços ou faça push sem autorização explícita do proprietário.
 Atualização automática do upstream WuzAPI já foi autorizada nesta implantação.
 Publicação de `wuzapi-mcp.filipesantosdev.pro` via Cloudflare também foi autorizada.
+Rotação de API Keys MCP é somente por pedido explícito do titular. Pedidos como
+“rotacionar WuzAPI composio” usam `docs/ROTATION.md`; não execute por manutenção preventiva.
 
 Este repositório contém somente o adaptador MCP, testes e documentação.
 O WuzAPI e seus dados ficam fora do Git, em `/var/lib/openbot/wuzapi`.

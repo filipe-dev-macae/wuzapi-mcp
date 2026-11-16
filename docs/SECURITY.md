@@ -50,10 +50,12 @@ Para revogar:
   --file /var/lib/openbot/wuzapi/secrets/mcp-clients.json
 ```
 
-Para rotacionar, revogue e recrie; atualize o segredo no cliente. O CLI usa
-bloqueio de arquivo e troca atômica do cadastro. Uma interrupção pode deixar
-`.tmp`/`.key` sem cadastro: examine o estado antes de repetir, não sobrescreva
-uma chave existente sem identificar quem a utiliza.
+Para rotacionar sem revogar antes da migração, use `rotate-prepare`, atualize
+e teste o cliente e conclua com `rotate-finish --client-updated`. O procedimento
+é exclusivamente manual e preserva escopos/instâncias. `rotate-cancel` permite
+abandonar a transição antes da conclusão. Comandos e recuperação em
+[Rotação manual](ROTATION.md). Não revogue/recrie uma chave de produção como
+primeira etapa de uma troca planejada.
 
 ## Segredos e rede
 

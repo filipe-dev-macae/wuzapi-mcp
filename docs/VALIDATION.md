@@ -119,10 +119,16 @@ conectada/autenticada. O endpoint HTTPS também entregou instructions no
 handshake legado e respondeu à ferramenta de guia com a chave dedicada ao
 Composio. Nenhuma mensagem WhatsApp foi enviada nessa validação.
 
-O Composio ainda retornou o catálogo anterior de 13 ferramentas na busca; a
-sincronização administrativa do Custom MCP segue pendente. A integração aqui
-disponível não oferece essa operação. Não foi validado carregamento automático
-da skill pela interface do OpenBot nem pela ZapIA. Detalhes em `SKILLS.md`.
+Após sincronização feita pelo titular, o Composio descobriu e executou
+`CUSTOM_WUZAPI_MCP_AWS_GET_USAGE_GUIDE`, retornando o guia atualizado. Essa
+pendência foi resolvida. Não foi validado carregamento automático da skill
+pela interface do OpenBot nem pela ZapIA. Detalhes em `SKILLS.md`.
+
+Rotação manual adicionada ao CLI: **27 testes passaram**, incluindo coexistência
+das chaves, permissões preservadas, finalização, cancelamento, revogação de
+transição, colisão com cliente independente e retomada após interrupção da
+promoção de arquivo. Os testes usam apenas diretórios temporários; nenhuma
+chave real foi gerada, revogada ou rotacionada. Procedimento em `ROTATION.md`.
 
 ## Limites restantes dos clientes e da infraestrutura
 

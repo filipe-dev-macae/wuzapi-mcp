@@ -1,0 +1,5 @@
+interface:
+  display_name: "Rotacionar WuzAPI"
+  short_description: "Troca manual de chave MCP sem revogar antes da migração"
+policy:
+  allow_implicit_invocation: false
