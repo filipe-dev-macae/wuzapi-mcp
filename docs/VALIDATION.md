@@ -74,7 +74,7 @@ mensagem, reação e criação de grupo foram consultados pelo Composio real.
 - Chamada partindo da ZapIA; o conector Composio já foi validado.
 - Aplicação da configuração MCP dentro do OpenBot.
 - Inicialização depois de reboot real da VPS.
-- Atualização real para um commit futuro; rollback foi exercitado em testes.
+- Rollback em incidente real; a recuperação foi exercitada em testes automatizados.
 - Todos os demais endpoints do catálogo em contas WhatsApp reais.
 
 ## Repetir as verificações

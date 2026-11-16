@@ -1,5 +1,17 @@
 # Grupos, reações, respostas e cards
 
+A atualização automática para `3ee4ecddd4c935f492fc54cde81923fc0938b36b`
+foi aplicada em 16/11/2026 às 14:34 UTC. O catálogo ativo tem 114 operações,
+incluindo envio avançado `/chat/send/raw`. Isso não comprova renderização de
+todo tipo de mensagem raw; cada formato novo precisa de teste real.
+
+Imagem, áudio, vídeo, documento e sticker têm endpoints JSON dedicados.
+Áudio permite configurar PTT para nota de voz ou áudio comum. O processamento
+de stickers aceita GIF/vídeo para conversão em WebP usando FFmpeg; o executável
+ainda não foi localizado no ambiente de execução da conta `openbot`.
+GIF como animação nativa do WhatsApp não foi validado; o endpoint de vídeo não
+expõe `GifPlayback` como parâmetro dedicado na versão inspecionada.
+
 As operações adicionais usam `api_operations`, `api_schema` e `api_call`.
 O catálogo inclui schemas em `#/definitions/` e `#/components/schemas/`;
 consulte o nome final com `api_schema`, por exemplo `ReactionText`.

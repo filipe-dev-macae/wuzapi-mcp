@@ -25,6 +25,8 @@ continua sendo um projeto independente, instalado a partir do
   até o WuzAPI e status da sessão. Sem chave, o endpoint retorna HTTP 401.
 - Conector `Wuzapi MCP - AWS` ativo no Composio; saúde e instâncias consultadas
   com sucesso por ele. Configuração do conector no OpenBot ainda pendente.
+- Atualização automática aplicada em 16/11/2026: commit WuzAPI
+  `3ee4ecddd4c935f492fc54cde81923fc0938b36b`, com 114 operações no catálogo ativo.
 - Nenhum segredo, sessão, banco, backup ou número real faz parte deste repositório.
 
 ## Recursos
@@ -46,6 +48,8 @@ continua sendo um projeto independente, instalado a partir do
 | `api_call` | Usar endpoints JSON do catálogo | Conforme operação |
 
 O catálogo inicial tem 113 operações extraídas das rotas **ativas** do WuzAPI.
+O catálogo da release ativa pode incluir operações posteriores; a atualização
+citada acima adicionou `/chat/send/raw`, um envio avançado de protobuf JSON.
 Há acesso genérico a envio de mídias, grupos, contatos, enquetes, listas,
 carrosséis, histórico e configurações. Esses recursos dependem das capacidades
 e dos requisitos da versão instalada; não foram todos testados em celulares.
