@@ -17,7 +17,7 @@ wuzapi-mcp = "wuzapi_mcp.server:main"
 wuzapi-mcp-keys = "wuzapi_mcp.keys:main"
 
 [tool.setuptools.package-data]
-wuzapi_mcp = ["operations.json"]
+wuzapi_mcp = ["operations.json", "skills/wuzapi-mcp/SKILL.md", "skills/wuzapi-mcp/references/*.md"]
 
 [tool.setuptools.packages.find]
 include = ["wuzapi_mcp*"]

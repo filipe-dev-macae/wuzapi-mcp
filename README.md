@@ -21,7 +21,7 @@ continua sendo um projeto independente, instalado a partir do
 - Sessão originalmente pareada para o teste preservada na migração.
 - Endereço público: `https://wuzapi-mcp.filipesantosdev.pro/mcp`, publicado
   por Cloudflare Tunnel após autorização explícita do proprietário.
-- HTTPS autenticado validado: descoberta das 13 ferramentas, consulta de saúde
+- HTTPS autenticado validado: descoberta das ferramentas, consulta de saúde
   até o WuzAPI e status da sessão. Sem chave, o endpoint retorna HTTP 401.
 - Conector `Wuzapi MCP - AWS` ativo no Composio; saúde e instâncias consultadas
   com sucesso por ele. Configuração do conector no OpenBot ainda pendente.
@@ -33,6 +33,7 @@ continua sendo um projeto independente, instalado a partir do
 
 | Ferramenta | Uso | Escopo |
 | --- | --- | --- |
+| `get_usage_guide` | Skill e referências por seção | `read` |
 | `health` | Saúde do WuzAPI | `read` |
 | `list_instances` | Instâncias e estados, com tokens ocultados | `read` |
 | `create_instance` | Nova instância com token forte interno | `admin` |
@@ -60,6 +61,11 @@ catálogo. Histórico exige habilitar retenção na instância; não é ativado 
 padrão pelo MCP. Webhooks são configurados no WuzAPI, não recebidos pelo MCP.
 
 ## Exemplos de chamadas
+
+Antes da primeira operação, consulte `get_usage_guide`. O guia principal também
+é enviado nas instruções da conexão e como skill/recursos MCP; detalhes em
+[Skill e orientação automática](docs/SKILLS.md). Clientes decidem o que carregar
+no contexto da LLM; ferramentas de WhatsApp continuam exigindo autorização.
 
 Obtenha primeiro o `instance_id` com `list_instances`.
 
@@ -105,6 +111,7 @@ Consulte `session(action="status")` até `loggedIn` ser verdadeiro. O retorno de
 
 - [Instalar em uma VPS / ambiente local](docs/INSTALL.md)
 - [Conectar Composio, ZapIA e OpenBot](docs/CONNECTORS.md)
+- [Skill, descoberta e instruções aos agentes](docs/SKILLS.md)
 - [Serviços, backups, atualização e recuperação](docs/OPERATIONS.md)
 - [Autenticação, permissões e limites](docs/SECURITY.md)
 - [Validação e resultados](docs/VALIDATION.md)

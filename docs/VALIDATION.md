@@ -104,7 +104,27 @@ serializado. A redação passou a inspecionar esse campo, ocultar chaves e
 preservar texto comum do usuário. Regressão automatizada cobre JSON válido,
 vazio e inválido; **20 testes passaram**. Serviço MCP reiniciado com a correção.
 
-## Limites restantes
+## Skill e orientação de agentes
+
+Adicionada a skill `wuzapi-mcp`, com guia principal e três referências, mantida
+em uma única cópia no pacote Python. **22 testes passaram**, incluindo descoberta
+nativa, manifesto, recursos e ferramenta devolvendo os mesmos arquivos,
+rejeição de seção arbitrária, escopo `read` e revogação da chave no transporte.
+O validador Agent Skills aprovou a estrutura. Um wheel construído em diretório
+temporário incluiu os quatro arquivos e foi lido independentemente do checkout.
+
+Após reiniciar somente o serviço MCP, um cliente autenticado real descobriu
+14 ferramentas e a skill, leu os arquivos e confirmou a sessão WhatsApp
+conectada/autenticada. O endpoint HTTPS também entregou instructions no
+handshake legado e respondeu à ferramenta de guia com a chave dedicada ao
+Composio. Nenhuma mensagem WhatsApp foi enviada nessa validação.
+
+O Composio ainda retornou o catálogo anterior de 13 ferramentas na busca; a
+sincronização administrativa do Custom MCP segue pendente. A integração aqui
+disponível não oferece essa operação. Não foi validado carregamento automático
+da skill pela interface do OpenBot nem pela ZapIA. Detalhes em `SKILLS.md`.
+
+## Limites restantes dos clientes e da infraestrutura
 
 - Chamada partindo da ZapIA; o conector Composio já foi validado.
 - Aplicação da configuração MCP dentro do OpenBot.

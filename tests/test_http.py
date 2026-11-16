@@ -25,10 +25,20 @@ async def test_http_auth_and_legacy_mcp_handshake(keys, backend):
             response = await client.post("/mcp", json=payload, headers=headers)
             assert response.status_code == 200, response.text
             assert response.json()["result"]["serverInfo"]["name"] == "WuzAPI MCP"
+            assert "get_usage_guide" in response.json()["result"]["instructions"]
+            assert response.json()["result"]["capabilities"].get("resources") is not None
             headers["MCP-Protocol-Version"] = "2025-06-18"
             response = await client.post("/mcp", json={"jsonrpc": "2.0", "id": 2, "method": "tools/list"}, headers=headers)
             assert response.status_code == 200
             assert "send_buttons" in {t["name"] for t in response.json()["result"]["tools"]}
+            assert "get_usage_guide" in {t["name"] for t in response.json()["result"]["tools"]}
+            response = await client.post("/mcp", json={"jsonrpc": "2.0", "id": 4,
+                "method": "resources/read", "params": {"uri": "skill://wuzapi-mcp/SKILL.md"}}, headers=headers)
+            assert response.status_code == 200
+            assert "get_usage_guide" in response.json()["result"]["contents"][0]["text"]
             keys.path.write_text("[]")
             response = await client.post("/mcp", json={"jsonrpc": "2.0", "id": 3, "method": "tools/list"}, headers=headers)
+            assert response.status_code == 401
+            response = await client.post("/mcp", json={"jsonrpc": "2.0", "id": 5,
+                "method": "resources/read", "params": {"uri": "skill://wuzapi-mcp/SKILL.md"}}, headers=headers)
             assert response.status_code == 401

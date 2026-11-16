@@ -54,6 +54,11 @@ Se mudar somente o catálogo de endpoints, os nomes das ferramentas MCP
 permanecem iguais. Se o código adicionar ferramentas MCP, sincronize o toolkit
 novamente conforme a documentação do Composio.
 
+A skill adicionou `get_usage_guide` (14 ferramentas no servidor). Sincronize a
+lista e leia o guia pelo conector antes de operar. Como o Composio pode repassar
+somente ferramentas, não presuma propagação automática das instructions nem
+da extensão Skills até a ZapIA. Veja [mecanismos e limites](SKILLS.md).
+
 ## OpenBot
 
 O usuário Linux `openbot` pode acessar diretamente:
