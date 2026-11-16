@@ -9,8 +9,37 @@ Imagem, áudio, vídeo, documento e sticker têm endpoints JSON dedicados.
 Áudio permite configurar PTT para nota de voz ou áudio comum. O processamento
 de stickers aceita GIF/vídeo para conversão em WebP usando FFmpeg. Nesta VPS,
 o executável está em `/srv/wuzapi-mcp/.toolchains/ffmpeg`, no PATH do WuzAPI.
-GIF como animação nativa do WhatsApp não foi validado; o endpoint de vídeo não
-expõe `GifPlayback` como parâmetro dedicado na versão inspecionada.
+O endpoint de vídeo não expõe `GifPlayback` como parâmetro dedicado na versão
+inspecionada. Existe uma alternativa pelo envio raw, testada abaixo.
+
+### GIF com reprodução dentro da conversa
+
+No segundo teste, em 16/11/2026, o titular confirmou que o GIF anterior chegou
+como documento para baixar. Foram comparados no grupo dois envios do mesmo
+clipe: GIF convertido por FFmpeg para MP4 H.264 sem áudio, enviado como vídeo
+comum (A), e a mesma mídia enviada via `/chat/send/raw` com
+`Message.videoMessage.gifPlayback: true` (B). Ambos retornaram sucesso;
+reprodução automática/loop do envio B ainda depende da confirmação no celular.
+
+O envio raw requer metadados válidos da mídia já enviada ao WhatsApp, incluindo
+URL, directPath, hashes e mediaKey; não aceita simplesmente um data URL no
+campo Message. No teste, esses campos vieram exclusivamente do registro privado
+do vídeo A, com histórico ativado brevemente e restaurado em seguida. As chaves
+não foram exibidas, nem incluídas no Git. O histórico retornado pelo MCP oculta
+mediaKey, portanto a rotina de duas etapas não é um fluxo autossuficiente para
+clientes MCP. Não foi criado endpoint de upload ou ferramenta dedicada a GIF.
+Não envie um arquivo GIF no campo Video esperando que seja convertido
+automaticamente, nem assuma que um campo desconhecido será aplicado pelo servidor.
+
+### Código de pareamento em botão de copiar
+
+Em 16/11/2026 foi criada uma instância temporária, aguardada a prontidão da
+sessão e gerado um código real com `pairing_code`. A instância principal enviou
+esse código somente à conversa privada do titular, usando `send_buttons`,
+botão `type: "copy"` e `copy_code` com o valor retornado. A API aceitou o envio.
+A instância temporária foi excluída imediatamente para invalidar o código;
+o teste não pretendia cadastrar outro dispositivo. Nenhum código foi colocado
+em logs de teste ou na documentação. Confirmação visual/cópia ainda pendente.
 
 ## Bateria real de mídia, presença e infraestrutura
 

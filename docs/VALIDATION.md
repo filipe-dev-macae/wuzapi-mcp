@@ -87,6 +87,8 @@ e conector Composio. Backup consistente realizado antes das alterações.
 | Recado do perfil | WhatsApp recusou alteração com HTTP 500; consulta confirmou valor original intacto |
 | Instância temporária | Criação, conexão sem pareamento, desconexão e exclusão completa aceitas |
 | Entrega privada de QR | Imagem de QR temporário aceita na conversa individual do titular; instância excluída imediatamente para invalidá-lo |
+| Segundo teste de GIF | Vídeo MP4 de controle e raw videoMessage com gifPlayback=true aceitos no grupo; conferência visual pendente |
+| Código em botão de copiar | Código real gerado em instância temporária e enviado no privado do titular; API aceitou, cópia visual pendente; instância excluída |
 | Proxy e S3 | Configuração desativada aceita, consulta S3 coerente; protocolo de proxy inválido rejeitado |
 | Rejeição de chamada | Sem CallOffer real durante a janela; não validada |
 
