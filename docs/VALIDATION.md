@@ -69,7 +69,38 @@ usados pelo OpenAPI do WuzAPI. O catálogo agora contém 57 schemas consultávei
 Os 19 testes passaram, incluindo regressão desse formato. Os schemas de
 mensagem, reação e criação de grupo foram consultados pelo Composio real.
 
-## Ainda não validado
+## Bateria adicional de 16/11/2026
+
+Executada com a release `3ee4ecddd4c935f492fc54cde81923fc0938b36b`, pelo MCP
+e conector Composio. Backup consistente realizado antes das alterações.
+
+| Teste | Evidência e limite |
+| --- | --- |
+| Imagem, MP3, nota de voz Opus, MP4 e PDF | API aceitou os envios no grupo; apresentação/reprodução depende de conferência no celular |
+| GIF e sticker animado | GIF enviado como documento e convertido em sticker via FFmpeg; animação visual ainda não confirmada |
+| Lista e enquete | Envios aceitos no grupo |
+| Carrossel de dois cards | HTTP 400 no grupo; aceito na conversa individual do titular |
+| Disponível/indisponível, digitando e gravando | Chamadas aceitas; presença global voltou a indisponível |
+| Assinatura de presença | Inscrição aceita; nenhum evento de presença observado durante a janela |
+| Recebimento e histórico | Mensagem de teste do outro participante encontrada em consulta paginada |
+| Webhooks e HMAC | Eventos reais de mensagem/recibo verificados; requisição sem assinatura rejeitada com 401 |
+| Recado do perfil | WhatsApp recusou alteração com HTTP 500; consulta confirmou valor original intacto |
+| Instância temporária | Criação, conexão sem pareamento, desconexão e exclusão completa aceitas |
+| Entrega privada de QR | Imagem de QR temporário aceita na conversa individual do titular; instância excluída imediatamente para invalidá-lo |
+| Proxy e S3 | Configuração desativada aceita, consulta S3 coerente; protocolo de proxy inválido rejeitado |
+| Rejeição de chamada | Sem CallOffer real durante a janela; não validada |
+
+Webhook vazio, eventos originais, HMAC ausente e histórico desativado foram
+restaurados e conferidos pelo MCP público; a conta principal permaneceu
+conectada/autenticada. Receptor temporário parado e porta 8083 fechada; ingress
+Cloudflare voltou ao MCP apenas. Os registros privados do teste não entram no Git.
+
+A consulta de histórico revelou segredos de mensagem dentro do campo JSON
+serializado. A redação passou a inspecionar esse campo, ocultar chaves e
+preservar texto comum do usuário. Regressão automatizada cobre JSON válido,
+vazio e inválido; **20 testes passaram**. Serviço MCP reiniciado com a correção.
+
+## Limites restantes
 
 - Chamada partindo da ZapIA; o conector Composio já foi validado.
 - Aplicação da configuração MCP dentro do OpenBot.

@@ -263,7 +263,7 @@ def create_server(backend: Backend, keys: APIKeys, operations=None, schemas=None
 
     @mcp.tool(annotations={"readOnlyHint": True})
     async def api_schema(name: str) -> dict:
-        """Consulta schema referenciado pelo catálogo, usando o nome após #/components/schemas/."""
+        """Consulta schema pelo nome final de #/definitions/ ou #/components/schemas/."""
         await authorize("read")
         if name not in schemas:
             raise ToolError("Schema não encontrado; consulte a documentação do WuzAPI")

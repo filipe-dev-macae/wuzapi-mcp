@@ -6,6 +6,7 @@
 | --- | --- |
 | `/srv/wuzapi-mcp` | Código Git, testes, documentação e venv do MCP |
 | `/srv/wuzapi-mcp/.toolchains/go` | Compilador Go local, fora do Git |
+| `/srv/wuzapi-mcp/.toolchains/ffmpeg` | Conversão de GIF/vídeo para stickers |
 | `/var/lib/openbot/wuzapi/source` | Checkout do repositório oficial |
 | `/var/lib/openbot/wuzapi/releases/<commit>` | Binário, assets e catálogo por versão |
 | `/var/lib/openbot/wuzapi/current` | Symlink para a release ativa |
@@ -23,6 +24,15 @@ antigo foi encerrado antes da cópia; não o reinicie em paralelo ao serviço
 definitivo, para não usar a mesma identidade de dispositivo duas vezes.
 
 ## Comandos sem root
+
+O WuzAPI recebe em `secrets/wuzapi.env` um PATH que inclui
+`/srv/wuzapi-mcp/.toolchains`. O FFmpeg foi copiado de uma instalação local
+existente e executado como `openbot`; os fixtures de áudio/vídeo/GIF foram
+decodificados antes dos envios. Para reproduzir em outra VPS, disponibilize um
+FFmpeg compatível e ajuste esse PATH. Ele não é atualizado pelo timer WuzAPI.
+Fixtures e evidências privadas dos testes manuais ficam em
+`/var/lib/openbot/wuzapi/manual-tests`, fora do Git. O receptor HTTP temporário
+usado na validação foi desligado e sua regra de túnel removida.
 
 Execute como `openbot`. Fora de uma sessão de login comum, prepare o acesso ao bus:
 

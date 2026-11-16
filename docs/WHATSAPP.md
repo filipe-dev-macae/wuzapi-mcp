@@ -7,10 +7,51 @@ todo tipo de mensagem raw; cada formato novo precisa de teste real.
 
 Imagem, áudio, vídeo, documento e sticker têm endpoints JSON dedicados.
 Áudio permite configurar PTT para nota de voz ou áudio comum. O processamento
-de stickers aceita GIF/vídeo para conversão em WebP usando FFmpeg; o executável
-ainda não foi localizado no ambiente de execução da conta `openbot`.
+de stickers aceita GIF/vídeo para conversão em WebP usando FFmpeg. Nesta VPS,
+o executável está em `/srv/wuzapi-mcp/.toolchains/ffmpeg`, no PATH do WuzAPI.
 GIF como animação nativa do WhatsApp não foi validado; o endpoint de vídeo não
 expõe `GifPlayback` como parâmetro dedicado na versão inspecionada.
+
+## Bateria real de mídia, presença e infraestrutura
+
+Em 16/11/2026, o envio pelo MCP ao grupo de teste foi aceito para imagem,
+MP3 comum, OGG/Opus com `PTT: true`, vídeo MP4, PDF, GIF como documento,
+figurinha animada convertida de GIF, lista interativa e enquete. Os arquivos
+foram gerados localmente, sem dados de clientes. Aceitação da API não comprova
+reprodução, animação ou apresentação em todas as versões do aplicativo.
+Para OGG em base64, use `data:audio/ogg;base64,` sem parâmetros intermediários.
+
+O carrossel de dois cards foi rejeitado no grupo com HTTP 400: o endpoint exige
+conversa individual PN ou LID. O mesmo formato foi aceito na conversa privada
+do titular. Não há suporte comprovado a carrossel no grupo nesta versão.
+
+Foram aceitos os comandos disponível/indisponível, digitando/pausado e
+gravando áudio/pausado no grupo. Presença é estado transitório; assinatura de
+presença de um contato foi aceita, mas nenhum evento correspondente foi
+observado. Rejeitar uma chamada requer `call_from` e `call_id` de uma oferta
+real; nenhuma oferta chegou durante a bateria, portanto isso não foi validado.
+
+A alteração temporária autorizada do recado retornou erro do WhatsApp
+(HTTP 500 na API, GraphQL 400). A consulta posterior confirmou que o recado
+original permaneceu intacto. Esse recurso falhou neste teste.
+
+Um webhook temporário recebeu eventos reais de mensagem e confirmação de
+leitura com HMAC válido. Requisição sem assinatura foi rejeitada com HTTP 401.
+Uma mensagem enviada pelo participante apareceu no histórico consultado pelo
+MCP. Ao terminar, webhook, HMAC e retenção do histórico foram restaurados aos
+valores originais; o receptor e sua rota pública temporária foram removidos.
+
+Criação, conexão, desconexão e remoção completa foram exercitadas em uma
+instância temporária sem parear outra conta. Configuração desativada de proxy
+e gravação/leitura de configuração S3 também funcionaram. Nenhum proxy real
+ou bucket S3 foi usado; a conectividade desses serviços segue sem validação.
+
+É possível obter `pairing_qr` e enviar sua imagem a um número específico via
+`/chat/send/image`, usando uma instância já conectada. O código obtido com
+`pairing_code` pode ser entregue por `send_text` da mesma maneira. A instância
+que ainda aguarda pareamento não pode enviar a própria mensagem: use outra
+instância conectada ou outro canal. QR e código são credenciais temporárias;
+entregue somente ao destinatário autorizado, em conversa privada.
 
 As operações adicionais usam `api_operations`, `api_schema` e `api_call`.
 O catálogo inclui schemas em `#/definitions/` e `#/components/schemas/`;

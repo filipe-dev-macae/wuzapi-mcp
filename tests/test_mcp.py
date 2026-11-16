@@ -157,3 +157,16 @@ def test_redaction_and_validation():
         Backend("http://public.example.com", ADMIN)
     with pytest.raises(ToolError):
         segment("../admin")
+
+
+def test_history_embedded_json_redacts_message_and_media_keys():
+    encoded = json.dumps({"Message": {"messageContextInfo": {"messageSecret": "hidden-message-key"},
+                                      "imageMessage": {"mediaKey": "hidden-media-key"}},
+                          "text": "mensagem preservada"})
+    result = redact({"data_json": encoded, "text_content": '{"token":"texto do usuário"}'})
+    assert "hidden-message-key" not in result["data_json"]
+    assert "hidden-media-key" not in result["data_json"]
+    assert json.loads(result["data_json"])["text"] == "mensagem preservada"
+    assert result["text_content"] == '{"token":"texto do usuário"}'
+    assert redact({"data_json": ""}) == {"data_json": ""}
+    assert redact({"data_json": '{"token":'})["data_json"] == "[REDACTED: invalid data_json]"

@@ -8,14 +8,27 @@ from fastmcp.exceptions import ToolError
 
 SENSITIVE = {"token", "admintoken", "authorization", "password", "secret",
              "secretkey", "accesskey", "hmackey", "apikey", "qrcode", "proxyurl",
-             "mediakey", "fileenckey", "globalencryptionkey"}
+             "mediakey", "messagesecret", "fileenckey", "globalencryptionkey",
+             "accesstoken", "refreshtoken", "clientsecret"}
 MAX_BODY = 32 * 1024 * 1024
 
 
 def redact(value, secrets=()):
     if isinstance(value, dict):
-        return {k: "[REDACTED]" if re.sub(r"[^a-z]", "", k.lower()) in SENSITIVE
-                else redact(v, secrets) for k, v in value.items()}
+        result = {}
+        for key, item in value.items():
+            name = re.sub(r"[^a-z]", "", key.lower())
+            if name in SENSITIVE:
+                result[key] = "[REDACTED]"
+            elif name == "datajson" and isinstance(item, str) and item:
+                # History embeds protobuf JSON in a string, including encryption keys.
+                try:
+                    result[key] = json.dumps(redact(json.loads(item), secrets), ensure_ascii=False)
+                except ValueError:
+                    result[key] = "[REDACTED: invalid data_json]"
+            else:
+                result[key] = redact(item, secrets)
+        return result
     if isinstance(value, list):
         return [redact(v, secrets) for v in value]
     if isinstance(value, str):
