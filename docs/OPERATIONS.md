@@ -15,6 +15,7 @@
 | `/var/lib/openbot/wuzapi/failed-state` | Estado preservado ao fazer rollback |
 | `/var/lib/openbot/wuzapi/last-update.json` | Resultado da última manutenção |
 | `/var/lib/openbot/wuzapi/maintenance-commands.log` | Saída privada de builds, testes e comandos |
+| `/var/lib/openbot/wuzapi/logs` | Logs privados dos serviços, legíveis por `openbot` |
 
 A pasta de teste anterior foi mantida em
 `/var/lib/openbot/wuzapi-capability-test` como cópia pré-migração. O processo
@@ -28,9 +29,9 @@ Execute como `openbot`. Fora de uma sessão de login comum, prepare o acesso ao 
 ```bash
 export XDG_RUNTIME_DIR="/run/user/$(id -u)"
 export DBUS_SESSION_BUS_ADDRESS="unix:path=$XDG_RUNTIME_DIR/bus"
-systemctl --user status wuzapi.service wuzapi-mcp.service
+systemctl --user status wuzapi.service wuzapi-mcp.service wuzapi-tunnel.service
 systemctl --user list-timers
-journalctl --user -u wuzapi.service -u wuzapi-mcp.service -n 100 --no-pager
+tail -n 100 "$HOME/wuzapi/logs/wuzapi.log" "$HOME/wuzapi/logs/mcp.log"
 ```
 
 Reiniciar o WuzAPI interrompe temporariamente as conexões. Reiniciar somente o
@@ -43,6 +44,38 @@ systemctl --user restart wuzapi.service
 
 Os serviços estão habilitados e o linger foi ativado administrativamente.
 Eles devem iniciar após reboot; não foi reiniciada a VPS durante a validação.
+Como `openbot` tem UID de conta de sistema, o journal não é legível por ela
+nesta VPS. Cada serviço grava em `logs/*.log` com permissão `600`, sem conceder
+acesso aos logs globais do servidor. Logs são anexados e não têm rotação
+automática nesta versão; monitore seu tamanho.
+
+## Publicação HTTPS
+
+O endpoint `https://wuzapi-mcp.filipesantosdev.pro/mcp` passa por um túnel
+remotamente gerenciado no Cloudflare. Apenas o MCP recebe tráfego público;
+WuzAPI e MCP continuam em loopback, e nenhuma porta de entrada adicional da
+VPS foi aberta. `/healthz` é uma consulta pública mínima; `/mcp` exige Bearer.
+
+O serviço `wuzapi-tunnel.service` roda como `openbot` e usa
+`secrets/cloudflared-token`. O token permite executar esse túnel; a VPS não
+recebeu um token geral de administração da conta Cloudflare. Os identificadores
+do túnel/DNS estão em `secrets/cloudflare-deployment.json`, incluídos nos backups
+de segredos. Regras de ingress são gerenciadas no Cloudflare, conforme modelo
+`deploy/cloudflare-ingress.example.json`.
+
+```bash
+systemctl --user status wuzapi-tunnel.service
+tail -n 100 "$HOME/wuzapi/logs/tunnel.log"
+```
+
+Binário local: `/srv/wuzapi-mcp/.toolchains/cloudflared`, versão `2026.11.0`,
+SHA-256 `51f7c68b57ed7269164075d7e789efce5b59355982f06392deeb037d982a51fd`.
+Foi obtido do release oficial do Cloudflare e conferido antes da execução.
+Atualização desse binário é separada da atualização automática do WuzAPI.
+
+Para retirar a publicação, pare/desabilite `wuzapi-tunnel.service` e remova
+somente o CNAME deste endpoint no Cloudflare. Os serviços locais e a sessão
+WhatsApp continuam funcionando. Nunca remova registros de outros serviços.
 
 ## Atualização automática autorizada
 
@@ -77,7 +110,7 @@ Para executar/verificar manualmente:
 
 ```bash
 systemctl --user start wuzapi-update.service
-journalctl --user -u wuzapi-update.service -n 100 --no-pager
+tail -n 100 "$HOME/wuzapi/logs/update.log"
 cd /srv/wuzapi-mcp
 WUZAPI_MCP_ENV_FILE="$HOME/wuzapi/secrets/mcp.env" \
   .venv/bin/python -m wuzapi_mcp.maintenance status
@@ -97,7 +130,7 @@ se for necessário recuperar em outra VPS.
 
 ```bash
 systemctl --user start wuzapi-backup.service
-journalctl --user -u wuzapi-backup.service -n 50 --no-pager
+tail -n 50 "$HOME/wuzapi/logs/backup.log"
 ```
 
 Backups não são apagados automaticamente. Monitore espaço com
@@ -122,6 +155,9 @@ WUZAPI_MCP_ENV_FILE="$HOME/wuzapi/secrets/mcp.env" \
 O estado substituído é movido para `failed-state`, não apagado. Mensagens ou
 alterações recebidas após o snapshot podem deixar de aparecer no banco ativo,
 mesmo permanecendo no estado arquivado. Não existe mesclagem automática de bancos.
+Backups anteriores à publicação não contêm a credencial do túnel. Para usá-los,
+preserve/recupere também `cloudflared-token` do estado arquivado antes de
+reiniciar o serviço de túnel.
 
 Se o WhatsApp tiver revogado o dispositivo no lado remoto, restaurar um banco
 não desfaz essa revogação; pode ser necessário parear novamente.

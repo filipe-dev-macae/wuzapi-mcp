@@ -3,6 +3,7 @@
 Responda em pt-BR. Preserve credenciais. Não envie mensagens a clientes,
 publique serviços ou faça push sem autorização explícita do proprietário.
 Atualização automática do upstream WuzAPI já foi autorizada nesta implantação.
+Publicação de `wuzapi-mcp.filipesantosdev.pro` via Cloudflare também foi autorizada.
 
 Este repositório contém somente o adaptador MCP, testes e documentação.
 O WuzAPI e seus dados ficam fora do Git, em `/var/lib/openbot/wuzapi`.

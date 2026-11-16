@@ -1,0 +1,11 @@
+{
+  "config": {
+    "ingress": [
+      {
+        "hostname": "wuzapi-mcp.filipesantosdev.pro",
+        "service": "http://127.0.0.1:8082"
+      },
+      {"service": "http_status:404"}
+    ]
+  }
+}

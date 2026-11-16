@@ -6,7 +6,7 @@ O caminho escolhido é **ZapIA → Composio → nosso MCP**. A ZapIA já consegu
 acessar conectores personalizados do Composio, conforme teste prévio do titular.
 Isso dispensa OAuth/DCR no nosso MCP: o Composio usa API Key no cabeçalho.
 
-Após publicar HTTPS, use como URL final, sem redirecionamentos:
+O HTTPS já está publicado. Use como URL final, sem redirecionamentos:
 
 ```text
 https://wuzapi-mcp.filipesantosdev.pro/mcp
@@ -41,6 +41,12 @@ explicitamente autorizados.
 
 O recurso Custom MCP do Composio é experimental. Consulte os passos atuais em:
 https://docs.composio.dev/docs/extending-sessions/custom-mcp
+
+O cadastro ainda não foi executado: as ferramentas do conector Composio
+disponível nesta sessão não expõem a administração de Custom MCPs, e não há
+credencial da API de plataforma configurada na VPS. O MCP público já foi
+validado com a chave dedicada ao Composio usando um cliente MCP real. Falta
+cadastrar/conectar a conta no projeto correto do painel Composio.
 
 Se mudar somente o catálogo de endpoints, os nomes das ferramentas MCP
 permanecem iguais. Se o código adicionar ferramentas MCP, sincronize o toolkit

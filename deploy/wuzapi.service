@@ -10,6 +10,8 @@ Restart=on-failure
 RestartSec=5
 TimeoutStopSec=60
 UMask=0077
+StandardOutput=append:%h/wuzapi/logs/wuzapi.log
+StandardError=inherit
 NoNewPrivileges=true
 
 [Install]

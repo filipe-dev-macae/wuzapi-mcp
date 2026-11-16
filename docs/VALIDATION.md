@@ -57,7 +57,6 @@ final deve ter destinatário/conteúdo autorizados.
 
 ## Ainda não validado
 
-- Publicação HTTPS e passagem pela rede Cloudflare.
 - Cadastro e chamada reais pelo Composio/ZapIA.
 - Aplicação da configuração MCP dentro do OpenBot.
 - Inicialização depois de reboot real da VPS.
@@ -65,6 +64,16 @@ final deve ter destinatário/conteúdo autorizados.
 - Todos os demais endpoints do catálogo em contas WhatsApp reais.
 
 ## Repetir as verificações
+
+Publicação validada em 16/11/2026: Cloudflare Tunnel saudável com quatro
+conexões; HTTPS `/healthz` retornou 200 e `/mcp` sem chave retornou 401.
+Um cliente MCP real usando a chave dedicada ao Composio descobriu as 13
+ferramentas, consultou saúde e confirmou a sessão conectada/autenticada pelo
+endpoint público. Nenhuma mensagem foi enviada nessa validação.
+
+Os serviços foram ajustados para logs privados, pois a conta de sistema
+`openbot` não tem acesso ao journal global. Unidades systemd foram verificadas,
+e acesso aos arquivos de log como `openbot` foi conferido.
 
 ```bash
 cd /srv/wuzapi-mcp

@@ -10,6 +10,8 @@ Restart=on-failure
 RestartSec=5
 TimeoutStopSec=30
 UMask=0077
+StandardOutput=append:%h/wuzapi/logs/mcp.log
+StandardError=inherit
 NoNewPrivileges=true
 
 [Install]

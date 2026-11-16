@@ -9,4 +9,6 @@ Environment=GOMAXPROCS=2
 ExecStart=/srv/wuzapi-mcp/.venv/bin/python -m wuzapi_mcp.maintenance update
 TimeoutStartSec=30min
 UMask=0077
+StandardOutput=append:%h/wuzapi/logs/update.log
+StandardError=inherit
 NoNewPrivileges=true

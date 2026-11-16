@@ -66,7 +66,7 @@ Na conta `openbot` desta VPS, `$HOME` é `/var/lib/openbot`:
 
 ```bash
 umask 077
-mkdir -p "$HOME/wuzapi/secrets" "$HOME/wuzapi/data" "$HOME/wuzapi/releases"
+mkdir -p "$HOME/wuzapi/secrets" "$HOME/wuzapi/data" "$HOME/wuzapi/releases" "$HOME/wuzapi/logs"
 git clone --depth 1 https://github.com/asternic/wuzapi.git "$HOME/wuzapi/source"
 ```
 
@@ -152,7 +152,15 @@ WUZAPI_MCP_ENV_FILE="$HOME/wuzapi/secrets/mcp.env" \
   .venv/bin/python -m wuzapi_mcp.maintenance backup
 ```
 
-Só depois publique o endpoint MCP por HTTPS. O modelo
-`deploy/cloudflared.example.yml` mantém WuzAPI e MCP em loopback e publica
-somente o destino MCP por Cloudflare Tunnel. Criar o túnel, seus registros DNS
-e iniciar a publicação exige autorização explícita; isso não foi executado.
+## Publicação por Cloudflare Tunnel
+
+A publicação desta VPS já foi autorizada e executada. Para reproduzir em outra
+máquina, crie um túnel **remotamente gerenciado**, dedicado ao MCP, configure o
+ingress conforme `deploy/cloudflare-ingress.example.json` e o CNAME proxied do
+subdomínio para `<ID_DO_TUNEL>.cfargotunnel.com`. Não sobrescreva registros existentes.
+
+Instale o binário oficial `cloudflared` em `.toolchains/cloudflared`, confira
+o checksum oficial do release e permita execução pela conta `openbot`.
+Armazene o token do túnel em `$HOME/wuzapi/secrets/cloudflared-token`, com
+permissão `600`, e habilite `wuzapi-tunnel.service`. O serviço usa `--token-file`;
+não inclua o token diretamente no comando, em arquivos versionados ou em URLs.

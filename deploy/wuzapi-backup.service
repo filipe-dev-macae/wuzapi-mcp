@@ -8,4 +8,6 @@ EnvironmentFile=%h/wuzapi/secrets/mcp.env
 ExecStart=/srv/wuzapi-mcp/.venv/bin/python -m wuzapi_mcp.maintenance backup
 TimeoutStartSec=5min
 UMask=0077
+StandardOutput=append:%h/wuzapi/logs/backup.log
+StandardError=inherit
 NoNewPrivileges=true

@@ -1,7 +1,0 @@
-# Modelo de Tunnel local; substitua ID e caminho após criar o túnel autorizado.
-tunnel: YOUR_TUNNEL_ID
-credentials-file: /var/lib/openbot/wuzapi/secrets/cloudflared.json
-ingress:
-  - hostname: wuzapi-mcp.filipesantosdev.pro
-    service: http://127.0.0.1:8082
-  - service: http_status:404

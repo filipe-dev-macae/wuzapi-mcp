@@ -1,0 +1,16 @@
+[Unit]
+Description=Cloudflare Tunnel do WuzAPI MCP
+After=network-online.target wuzapi-mcp.service
+
+[Service]
+ExecStart=/srv/wuzapi-mcp/.toolchains/cloudflared tunnel --no-autoupdate --metrics 127.0.0.1:20241 run --token-file %h/wuzapi/secrets/cloudflared-token
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=30
+UMask=0077
+StandardOutput=append:%h/wuzapi/logs/tunnel.log
+StandardError=inherit
+NoNewPrivileges=true
+
+[Install]
+WantedBy=default.target

@@ -19,8 +19,10 @@ continua sendo um projeto independente, instalado a partir do
 - Serviços locais instalados e executados como `openbot`, sem sudo nessa conta.
 - WuzAPI em `127.0.0.1:8081`; MCP em `http://127.0.0.1:8082/mcp`.
 - Sessão originalmente pareada para o teste preservada na migração.
-- Endereço público planejado: `https://wuzapi-mcp.filipesantosdev.pro/mcp`.
-  A publicação HTTPS/DNS ainda depende da autorização do proprietário.
+- Endereço público: `https://wuzapi-mcp.filipesantosdev.pro/mcp`, publicado
+  por Cloudflare Tunnel após autorização explícita do proprietário.
+- HTTPS autenticado validado: descoberta das 13 ferramentas, consulta de saúde
+  até o WuzAPI e status da sessão. Sem chave, o endpoint retorna HTTP 401.
 - Registro no Composio e configuração do conector no OpenBot ainda pendentes.
 - Nenhum segredo, sessão, banco, backup ou número real faz parte deste repositório.
 
