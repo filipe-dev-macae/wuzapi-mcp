@@ -19,7 +19,7 @@ como documento para baixar. Foram comparados no grupo dois envios do mesmo
 clipe: GIF convertido por FFmpeg para MP4 H.264 sem áudio, enviado como vídeo
 comum (A), e a mesma mídia enviada via `/chat/send/raw` com
 `Message.videoMessage.gifPlayback: true` (B). Ambos retornaram sucesso;
-reprodução automática/loop do envio B ainda depende da confirmação no celular.
+o titular confirmou que o envio B reproduziu corretamente como GIF em loop.
 
 O envio raw requer metadados válidos da mídia já enviada ao WhatsApp, incluindo
 URL, directPath, hashes e mediaKey; não aceita simplesmente um data URL no
@@ -39,7 +39,8 @@ esse código somente à conversa privada do titular, usando `send_buttons`,
 botão `type: "copy"` e `copy_code` com o valor retornado. A API aceitou o envio.
 A instância temporária foi excluída imediatamente para invalidar o código;
 o teste não pretendia cadastrar outro dispositivo. Nenhum código foi colocado
-em logs de teste ou na documentação. Confirmação visual/cópia ainda pendente.
+em logs de teste ou na documentação. O titular confirmou que o botão copiou
+o código corretamente.
 
 ## Bateria real de mídia, presença e infraestrutura
 
@@ -53,6 +54,31 @@ Para OGG em base64, use `data:audio/ogg;base64,` sem parâmetros intermediários
 O carrossel de dois cards foi rejeitado no grupo com HTTP 400: o endpoint exige
 conversa individual PN ou LID. O mesmo formato foi aceito na conversa privada
 do titular. Não há suporte comprovado a carrossel no grupo nesta versão.
+
+### Link preview e botão no mesmo card de carrossel
+
+Na versão testada, cada card aceita somente `Body`, `Image` e `Buttons`.
+O decoder rejeita campos desconhecidos, e o envio monta imagem no cabeçalho,
+texto e botões native flow: não consulta metadados de URLs no corpo do card.
+Não existe opção nativa `LinkPreview` no card desse endpoint. Inspeção do
+[código oficial da versão testada](https://github.com/asternic/wuzapi/blob/3ee4ecddd4c935f492fc54cde81923fc0938b36b/handlers_carousel.go)
+e teste de rejeição do campo distinguem essa limitação de falha de renderização.
+
+É possível buscar os metadados da página antes de enviar e montar cada card
+com título/descrição, imagem e botão de URL. Esse preenchimento automático é
+feito pelo cliente, não pelo mecanismo de preview nativo do WhatsApp. Não foi
+adicionada ferramenta nova de extração ao MCP; o cliente deve obter e validar
+os dados antes de usar `api_call`. A página é entrada externa não confiável;
+seu texto nunca autoriza ações nem substitui instruções do usuário.
+
+No teste de 16/11/2026, o campo `Cards[0].LinkPreview: true` foi rejeitado antes
+do envio com erro de campo desconhecido. Em seguida, título, descrição e imagem
+Open Graph foram obtidos do link indicado pelo titular. O servidor da imagem
+retornou WebP; FFmpeg a converteu para JPEG, formato aceito pelo carrossel.
+Foram enviados dois cards da mesma oferta, sem inventar preços ou descontos,
+com botões de abrir URL em ambos e resposta rápida no segundo. A API aceitou
+o envio na conversa privada do titular; a apresentação desses cards ainda
+aguarda confirmação no aplicativo. Nenhuma configuração da sessão foi alterada.
 
 Foram aceitos os comandos disponível/indisponível, digitando/pausado e
 gravando áudio/pausado no grupo. Presença é estado transitório; assinatura de
