@@ -1,0 +1,18 @@
+[Unit]
+Description=Agua Viva independent attendance backend
+After=network-online.target
+[Service]
+User=aguaviva
+WorkingDirectory=/opt/aguaviva-attendance
+ExecStart=/opt/aguaviva-attendance/.venv/bin/aguaviva-attendance --config /etc/aguaviva/config.json --data /var/lib/aguaviva
+Environment=ATTENDANCE_MODELS=/var/lib/aguaviva/models
+Restart=on-failure
+RestartSec=5
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/aguaviva
+[Install]
+WantedBy=multi-user.target

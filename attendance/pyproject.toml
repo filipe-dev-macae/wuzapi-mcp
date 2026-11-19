@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+[project]
+name = "aguaviva-attendance"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = ["fastmcp==4.2.0", "httpx2==2.16.2", "starlette==1.10.0", "uvicorn==0.54.0", "Pillow==12.2.0", "jsonschema==4.26.0"]
+[project.optional-dependencies]
+media = ["faster-whisper==1.2.1", "av==16.1.0"]
+test = ["pytest==9.2.0", "pytest-asyncio==1.5.0"]
+[project.scripts]
+aguaviva-attendance = "aguaviva.attendance_bridge:main"
+aguaviva-backup = "aguaviva.backup:main"
+aguaviva-connector = "aguaviva.connector:main"
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+testpaths = ["tests"]
+[tool.setuptools.packages.find]
+include = ["aguaviva*"]
+
+[tool.setuptools.package-data]
+aguaviva = ["schemas.json"]

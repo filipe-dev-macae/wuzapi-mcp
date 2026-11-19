@@ -1,0 +1,13 @@
+[Unit]
+Description=Agua Viva scoped OpenBot connector
+After=openbot.service
+[Service]
+WorkingDirectory=/opt/aguaviva-attendance
+EnvironmentFile=%h/.config/aguaviva/connector.env
+ExecStart=/opt/aguaviva-attendance/.venv/bin/aguaviva-connector --agent ${AGENT_ID} --automation-dir %h/.config/OpenBot/automation --key-file %h/.config/aguaviva/connector.key --state-dir %h/.local/share/aguaviva-connector --backend-url ${ATTENDANCE_URL} --backend-key-file %h/.config/aguaviva/action.key --media-dir ${ATTENDANCE_MEDIA_DIR}
+Restart=on-failure
+RestartSec=5
+UMask=0077
+NoNewPrivileges=true
+[Install]
+WantedBy=default.target

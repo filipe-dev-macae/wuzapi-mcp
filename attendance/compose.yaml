@@ -1,0 +1,17 @@
+services:
+  attendance:
+    build: .
+    image: aguaviva-attendance:0.1.0
+    restart: unless-stopped
+    init: true
+    ports:
+      - "127.0.0.1:${ATTENDANCE_PORT:-8090}:8090"
+    volumes:
+      - data:/data
+      - ./runtime:/config:ro
+    mem_limit: 2g
+    cpus: 1.0
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+volumes:
+  data:
